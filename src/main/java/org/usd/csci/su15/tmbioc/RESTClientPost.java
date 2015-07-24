@@ -5,9 +5,11 @@ package org.usd.csci.su15.tmbioc;
 import java.io.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -58,12 +60,15 @@ public class RESTClientPost {
 				String SessionNumber = br_Sumbit.readLine();
 				conn_Submit.disconnect();
 
-				String sub=Taxonomy.substring(0,7);
-				String email=Taxonomy.substring(8,0); // added 1 ... JM
-				if(sub.equals("Submit:"))
-				{
-					System.out.println("Thanks for your submission (Session number: " + SessionNumber + ").\nThe result will be sent to your E-mail: " + email + ".\n");
-				}
+                                if(!Taxonomy.isEmpty() && Taxonomy.length() > 7)
+                                {
+                                    String sub=Taxonomy.substring(0,7);
+                                    String email=Taxonomy.substring(8); // added 1 ... JM
+                                    if(sub.equals("Submit:"))
+                                    {
+                                            System.out.println("Thanks for your submission (Session number: " + SessionNumber + ").\nThe result will be sent to your E-mail: " + email + ".\n");
+                                    }
+                                }
 				else
 				{
 					System.out.println(SessionNumber);
@@ -95,7 +100,10 @@ public class RESTClientPost {
 						}
 					}
 					catch(NullPointerException e){}
-					
+					Writer w = new FileWriter(args[0]+".out");
+                                        w.write(outputSTR);
+                                        w.flush();
+                                        w.close();
 					System.out.println(outputSTR);
 				}
 			}
